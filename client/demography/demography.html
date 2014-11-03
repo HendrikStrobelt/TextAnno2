@@ -1,0 +1,98 @@
+<template name="demography">
+    <h3> Demographic Data</h3>
+    <p> Please let us know some details about you. This data helps us to classify test results and is not used individually.</p>
+
+
+
+    {{>demo_form}}
+
+
+
+
+</template>
+
+<template name="demo_results">
+    {{aaa}}
+</template>
+
+<template name="demo_form">
+    <form >
+
+
+        <b>Age Group</b>
+        <div class="radio">
+            <label class="radio-inline">
+                <input type="radio" name="optionsAge" id="optionsRadios1" value="less20" checked>
+                younger than 20
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optionsAge" id="optionsRadios2" value="20_30">
+                between 20-30
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optionsAge" id="optionsRadios2" value="30_60">
+                between 30-60
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optionsAge" id="optionsRadios2" value="over60">
+                over 60
+            </label>
+
+        </div>
+
+        <b>Gender</b>
+        <div class="radio">
+            <label class="radio-inline">
+                <input type="radio" name="optionsGender" id="optionsRadios1" value="male" checked>
+                male
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optionsGender" id="optionsRadios2" value="female">
+                female
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optionsGender" id="optionsRadios2" value="no" >
+                no comment
+            </label>
+        </div>
+
+        <b>Do you use a  Desktop PC or a tablet ?</b>
+        <div class="radio">
+            <label class="radio-inline">
+                <input type="radio" name="optionsDevice" id="optionsRadios1" value="desktop" checked>
+                Desktop PC
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optionsDevice" id="optionsRadios2" value="tablet">
+                Tablet
+            </label>
+
+        </div>
+
+
+
+        <div class="form-group" >
+            <label for="rgTest">Which number do you see in the image below? </label>
+            <!--<input type="number" class="form-control" id="rgTest" value="-1" style="width:100px">-->
+            <select class="form-control" style="width:100px;" id="rgTest">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+            </select>
+        </div>
+        <img src="CB_Test_400px.png"/>
+
+        <div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </form>
+
+
+</template>

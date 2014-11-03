@@ -1,0 +1,32 @@
+<template name="userTest">
+    {{#if validSession}}
+    <!--<h2 style="padding-left:10px;">Find the annotations.</h2>-->
+        <div id="examnpleText" style="position:fixed;top:20px; left:30px;"> {{{currentTestString}}}</div>
+
+
+  {{> vis}}
+
+  {{> control}}
+
+        <div style="position: fixed;top:765px;left: 30px; "> The next test is test {{currentTest}} of {{maxTests}}. </div>
+
+
+    {{/if}}
+</template>
+
+
+
+
+
+<template name="vis">
+    <div id="vis" style="width: 900px;height: 700px;position: fixed;top:60px;left: 20px; background-color: #eeeeee; border: 5px solid #245269;overflow: hidden;">
+        <div style="padding:10px;">{{{counter}}}</div>
+    </div>
+</template>
+
+<template name="control">
+
+    <button class="btn btn-primary" style="position: fixed;top:765px;left: 910px; " id="start">Start</button>
+    <!--<button class="btn btn-primary">Click Me Tooo</button>-->
+    <!--<p>You've pressed the button {{counter}} times.</p>-->
+</template>

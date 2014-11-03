@@ -1,0 +1,69 @@
+<template name="showLogs">
+
+
+    <table class="table table-hover">
+        <thead>
+          <th>sessionID</th>
+          <th>action</th>
+          <th>date</th>
+        </thead>
+
+        <tbody>
+        {{#each logs}}
+          {{> oneLog}}
+        {{/each}}
+        </tbody>
+
+    </table>
+
+
+
+</template>
+
+
+<template name="oneLog">
+    <tr>
+    <td><a href="showLogs?detail={{sessionID}}">{{sessionID}}</a></td>
+    <td>
+{{#if isTest}}
+        <button class="btn btn-sm btn-primary"
+                onclick="window.open('logs/{{type}}/{{_id}}')"> {{type}}</button>
+{{else}}
+        {{type}}
+{{/if}}
+    </td>
+
+
+    <td>{{date}}</td>
+        {{#if isTest}}
+        <td>
+            <div style="height: 10px; width: {{correctLength}}px;background-color:green"></div>
+            <div style="height: 10px; width: {{incorrectLength}}px;background-color:red"></div>
+            <div > {{technique}}</div>
+        </td>
+        {{/if}}
+        {{#if isDemo}}
+            <td>
+                <b>age </b>{{demo.age}}, <b>gender </b>{{demo.gender}}, <b>dev </b>{{demo.device}},
+                <b>rg </b>{{demo.rgtest}}
+            </td>
+        {{/if}}
+        {{#if isComment}}
+            <td>
+                {{comment}}
+            </td>
+        {{/if}}
+    </tr>
+</template>
+
+
+
+<template name="userTestLog">
+    User Test {{_id}} --
+
+
+    <div id="vis" style="width: 900px;height: 700px;position: fixed;top:60px;left: 20px; background-color: #eeeeee; border: 5px solid #245269;overflow: hidden;">
+        <div style="padding:10px;">{{{x}}}</div>
+    </div>
+
+</template>

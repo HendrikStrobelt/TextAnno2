@@ -1,0 +1,20 @@
+<template name="end">
+
+
+    <h3> Thank you for participating in our study.</h3>
+    <p></p>
+    <p> You reached {{points}} points -- JIHAAA !!!  </p>
+    <p></p>
+    <h3> Your rewards code is: {{code}}</h3>
+
+
+    {{#if showField}}
+    <p>If you have comments and recommendations for us, please let us know:</p>
+    <textarea class="form-control" rows="3" id="finalComment"></textarea>
+    <p></p>
+    <button class="btn btn-primary">submit comments</button>
+    {{else}}
+        <p> Thank you for your comment !</p>
+    {{/if}}
+
+</template>

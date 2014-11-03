@@ -1,0 +1,283 @@
+/* CSS declarations go here */
+/* CSS declarations go here */
+
+
+/******* LINES **************/
+.underlined {
+    text-decoration: underline;
+    text-decoration-style:solid;
+}
+
+.underlined_double {
+    text-decoration: underline;
+    -moz-text-decoration-style: double;
+    text-decoration-style:double;
+    border-bottom: 1px solid #000;
+}
+
+.underlined_dotted {
+    /*text-decoration: underline;*/
+    /*-moz-text-decoration-style: dotted;*/
+    /*text-decoration-style: dotted;*/
+    border-bottom: 1px dotted #000;
+    text-decoration: none;
+}
+
+.underlined_dashed {
+    text-decoration: underline;
+    -moz-text-decoration-style: dashed;
+    text-decoration-style: dashed;
+}
+
+.underlined_wavy {
+    text-decoration: underline;
+    -moz-text-decoration-style: wavy;
+    text-decoration-style: wavy;
+}
+
+/*
+.underlined {
+   border-style: solid;
+   border-width: 0px;
+   border-bottom-width: 1px;
+}
+
+.underlined_solid {
+   border-style: solid;
+   border-width: 0px;
+   border-bottom-width: 1px;
+}
+
+.underlined_double {
+   border-style: double;
+   border-width: 0px;
+   border-bottom-width: 3px;
+}
+
+.underlined_dotted {
+   border-style: dotted;
+   border-width: 0px;
+   border-bottom-width: 1px;
+}
+
+.underlined_dashed {
+   border-style: dashed;
+   border-width: 0px;
+   border-bottom-width: 1px;
+}
+
+.underlined_wavy {
+    text-decoration: underline;
+	-moz-text-decoration-style: wavy;
+    text-decoration-style: wavy;
+}
+
+*/
+
+.overline {
+    text-decoration: overline;
+}
+
+.line-through {
+    text-decoration: line-through;
+}
+
+
+
+
+
+/******* FONT PROPERTIES **************/
+.bold {
+    font-weight:bold
+}
+
+.italic {
+    font-style: italic;
+}
+
+.font-family_Georgia {
+    font-family: Georgia, serif
+}
+
+.font-family_Arial {
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.font-family_Comic {
+    font-family: "Comic Sans MS", cursive, sans-serif
+}
+
+.font-family_Courier {
+    font-family: "Courier New", Courier, monospace
+}
+
+.small-caps {
+    font-variant: small-caps;
+}
+
+.text-shadow-thick-gray {
+    text-shadow: 4px 4px 3px rgb(50, 50, 50);
+}
+
+.text-shadow-shifted-gray {            /* effect of blurring */
+    text-shadow:0px -2px #A0A0A0;
+}
+
+
+
+/******* SPACING **************/
+
+.letter-spacing-widened {
+    letter-spacing: 5px;
+}
+
+.letter-spacing-squeezed {
+    letter-spacing: -1.5px;
+}
+
+.word-spacing {
+    /*word-spacing: 30px;*/
+    padding-left: 7px ;
+    padding-right: 7px ;
+}
+
+
+
+
+/******* BORDERS **************/
+
+.border_rounded-slight {
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+.border_rounded-medium {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.border_rounded-strong {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.border {
+    border: 1px solid black;
+    border-radius: 0px;
+}
+
+.border_dashed {
+    border: 1px dashed black;
+}
+
+.border_double {
+    border: 3px double black;
+}
+
+.border_dotted {
+    border: 1px dotted black;
+}
+
+
+/******* TEXT COLOR **************/
+
+.BWcolor_white {
+    color: rgb(255,255,255);
+}
+
+.BWcolor_gray {
+    color: rgb(150,150,150);
+}
+
+.BWcolor_black {
+    color: rgb(0,0,0);
+}
+
+
+.color_cat1_red {
+    color: rgb(227,26,28)
+}
+
+.color_cat2_blue {
+    color:rgb(0,0,255);
+}
+
+.color_cat3_green {
+    color:rgb(0,204,0);
+}
+
+.color_cat4_orange {
+    color:rgb(255,170,45);
+}
+
+.color_cat5_pink {
+    color: rgb(255,102,255);
+}
+
+.color_cat6_purple {
+    color: rgb(153,0,255);
+}
+
+
+
+/******* BACKGROUND COLOR **************/
+
+.colorBack_cat1_yellow {
+    background-color: rgb(255,255,50);
+}
+
+.colorBack_cat2_light-blue {
+    background-color: rgb(140,255,255);
+}
+
+.colorBack_cat3_pink {
+    background-color: rgb(252,205,229);
+}
+
+.colorBack_cat4_light-orange {
+    background-color: rgb(253,191,123);
+}
+
+.colorBack_cat5_light-green {
+    background-color: rgb(137,255,137);
+}
+
+.colorBack_cat6_purple {
+    background-color: rgb(204,153,255);
+}
+
+.colorBack_cat7_red {
+    background-color: rgb(251,128,114);
+}
+
+.colorBack_cat8_blue {
+    background-color: rgb(0,176,240);
+}
+
+.colorBack_cat9_burlywood {
+    background-color: burlywood;
+}
+
+
+.colorBack_gray {
+    background-color:rgb(200,200,200);
+}
+
+.fontSize_150 {
+    font-size: 150%;
+    font-weight: 200;
+    line-height: .75;
+}
+
+#vis {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: cell;
+}
+body{
+    font-family: 'Source Sans Pro', sans-serif;
+}
