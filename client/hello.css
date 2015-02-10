@@ -269,6 +269,12 @@
     line-height: .75;
 }
 
+.fontSize_150.bold {
+    font-size: 150%;
+    font-weight: 600;
+    line-height: .75;
+}
+
 #vis {
     -webkit-touch-callout: none;
     -webkit-user-select: none;

@@ -3,7 +3,7 @@
  */
 
 
-var maxTests = 12;
+var maxTests = 1;
 var activeList = [];
 var inactiveList = [];
 
@@ -12,88 +12,6 @@ var currentText = new ReactiveVar("This is the test field. Please ensure that yo
 var showSample = new ReactiveVar(true);
 
 var currentDistribution ={};
-
-var helpText =function(){
-
-    var styleString = this.techs.map(function(d){return d.css;}).join(" ");
-
-    var explain = ""
-    if (this.type == "merge"){
-        explain = "Please find only occurrences using <b>BOTH</b> highlights ("+
-        this.techs.map(function(d){return d.name;}).join(" and ")
-        +")."
-    }else if (this.type == "dominant"){
-        explain = "Please find occurrences with the highlight ("+
-        this.techs[0].name
-        +")."
-    }else{
-        explain = "Please find occurrences with the highlight ("+
-        this.techs[0].name+")."
-    }
-
-
-
-    var validExamples = "";
-    if (this.type == "dominant"){
-        validExamples = "These two are <span class='"+this.techs[0].css+"'> valid </span> and"+
-        "<span class='"+styleString+"'> valid </span>";
-    }else if (this.type=="merge"){
-        validExamples = "Only this highlight is  <span class='"+styleString+"'> valid </span>"
-    }else{
-        validExamples = "This highlight is <span class='"+styleString+"'> valid </span>."
-    }
-
-    var invalidExamples = "";
-    if (this.type == "dominant"){
-        invalidExamples = "(This highlight is <span class='"+this.techs[1].css+"'> wrong</span>)";
-    }else if (this.type=="merge"){
-        invalidExamples = "(These highlights are <span class='"+this.techs[1].css+"'> wrong</span> and"+
-        "<span class='"+this.techs[0].css+"'> wrong</span>)";
-    }else{
-        invalidExamples = ""
-    }
-
-    return explain +validExamples + " "+invalidExamples;
-}
-
-
-var techniques = {
-    "categorical": [
-        ["colorBack", ["colorBack_cat1_yellow", "colorBack_cat2_light-blue", "colorBack_cat3_pink", "colorBack_cat4_light-orange", "colorBack_cat5_light-green", "colorBack_cat6_purple", "colorBack_cat7_red", "colorBack_cat8_blue", "colorBack_cat9_burlywood"]],
-        ["color", ["color_cat1_red", "color_cat2_blue", "color_cat3_green", "color_cat4_orange", "color_cat5_pink", "color_cat6_purple"]],
-        ["underlined", ["underlined", "underlined_double", "underlined_dotted", "underlined_dashed", "underlined_wavy"]],
-        ["font-family", ["font-family_Arial", "font-family_Comic", "font-family_Courier"]], //"font-family_Georgia" = VERDANA
-        ["border", ["border", "border_double", "border_dashed", "border_dotted"]],
-        ["enclosing", ["enclosingCurlyBrackets", "enclosingAngleBrackets", "enclosingAsterisks", "enclosingSquaredBrackets"]]
-        //    ["border", ["border", "border_rounded-slight", "border_rounded-medium", "border_rounded-strong"]]
-    ],
-    "boolean": [
-        ["underlined", "underlined"],
-        ["line-through", "line-through"],
-        ["bold", "bold"],
-        ["italic", "italic"],
-        ["small-caps", "small-caps"],
-        ["text-shadow", "text-shadow-thick-gray"],
-        ["text-shadow", "text-shadow-shifted-gray"],
-        ["letter-spacing", "letter-spacing-widened"],
-        ["letter-spacing", "letter-spacing-squeezed"],
-        ["word-spacing", "word-spacing"],
-        ["border", "border"],
-        ["color", "color_cat1_red"],
-        ["colorBack", "colorBack_cat1_yellow"]
-    ],
-    "quantitative": [
-        ["color", "color-Quantitative"],
-        ["color", "colorBW-Quantitative"],
-        ["colorBack", "colorBack-Quantitative"],
-        ["colorBack", "colorBackAlpha-Quantitative"],
-        ["colorBack", "colorBackBW-Quantitative"],
-        ["border", "border-bottom-width"],
-        ["font-size", "font-size_increase"],
-        ["font-size", "font-size_decrease"],
-        ["border", "border-rounded"]
-    ]
-};
 
 
 Template.userTest.created = function(){
@@ -125,7 +43,7 @@ Template.userTest.helpers({
 
 
 
-        var text = helpText.call(Session.get("userTest")[Session.get("userTestIndex")]);
+        var text = UserTestGenereator.helpText.call(Session.get("userTest")[Session.get("userTestIndex")]);
 
 
 
@@ -152,15 +70,7 @@ Template.vis.helpers({
         if (!Session.get("userID")) disclaimer= "<b>THIS IS ONLY A TRAINING SYSTEM- No results are recorded !! You will NOT get payment here.</b><br/>"
 
 
-
-
-        var text = helpText.call(Session.get("userTest")[Session.get("userTestIndex")]);
-
-
-        return disclaimer + "<div style='border: 2px solid;padding: 2px; background-color:white;'>"+
-            text
-            +"</div>" ;
-
+        return disclaimer + UserTestGenereator.yesNoList(Session.get("userTest")[Session.get("userTestIndex")])
         //
 
 
@@ -182,12 +92,15 @@ Template.vis.events({
     'click .active': function (d) {
         //console.log(d.currentTarget.id);
         activeList.push(d.currentTarget.id)
+        $("#"+d.currentTarget.id).css("background-color","green");
         $("#"+d.currentTarget.id).fadeTo(50,.5)
     },
     'click .inactive': function (d) {
-        console.log(d.currentTarget.id);
+        //console.log(d.currentTarget.id);
         inactiveList.push(d.currentTarget.id)
+        $("#"+d.currentTarget.id).css("background-color","red");
         $("#"+d.currentTarget.id).fadeTo(50,.5)
+
     }
 })
 
@@ -214,79 +127,13 @@ Template.control.events({
           //console.log(highlightIndices);
           console.log(usedEncoding, Session.get("userTest"));
 
-          //There are three kinds of test scenarios: SINGLE, MERGED, DOMINANT
-          //var positiveEncoding='', negative1Encoding='', negative2Encoding='';
-
-          var textToHTMLMapping = function(d,i){
-              return d;
-          }
-
-          if (usedEncoding.type==='single'){
-
-              var positiveEncoding = usedEncoding.techs[0].css;
-
-              textToHTMLMapping = function(d,i){
-                  if (_.contains(highlightIndices.positiveSamples, i)){
-                      return "<span class='active "+positiveEncoding+"'  id='word_"+i+"'>" + d+"</span>"
-                  }else {
-                      return "<span class='inactive'  id='word_"+i+"'>" + d+ "</span>";
-                  }
-
-
-              }
-
-          }else if (usedEncoding.type==='dominant'){
-              var positiveEncoding = usedEncoding.techs[0].css;
-              var positive2Encoding = usedEncoding.techs[0].css + ' '+usedEncoding.techs[1].css;
-              var negative1Encoding = usedEncoding.techs[1].css;
-
-              textToHTMLMapping = function(d,i) {
-                  if (_.contains(highlightIndices.positiveSamples, i)) {
-                      return "<span class='active " + positiveEncoding + "'  id='word_" + i + "'>" + d + "</span>"
-                  }else if (_.contains(highlightIndices.negativeSamples1, i)) {
-                      return "<span class='active " + positive2Encoding + "'  id='word_" + i + "'>" + d + "</span>"
-                  }else {
-                      var css = '';
-                      if (_.contains(highlightIndices.negativeSamples2, i)) css = negative1Encoding;
-                      return "<span class='inactive " + css + "'  id='word_" + i + "'>" + d + "</span>";
-                  }
-              }
-
-          }else if (usedEncoding.type==='merge'){
-              var positiveEncoding = usedEncoding.techs[0].css + ' '+usedEncoding.techs[1].css;
-              var negative1Encoding = usedEncoding.techs[0].css;
-              var negative2Encoding= usedEncoding.techs[1].css;
-
-              textToHTMLMapping = function(d,i) {
-                  if (_.contains(highlightIndices.positiveSamples, i)) {
-                      return "<span class='active " + positiveEncoding + "'  id='word_" + i + "'>" + d + "</span>"
-                  } else {
-                      var css = '';
-
-                      if (_.contains(highlightIndices.negativeSamples1, i)) css = negative1Encoding;
-                      else if (_.contains(highlightIndices.negativeSamples2, i)) css = negative2Encoding;
-
-
-                      return "<span class='inactive " + css + "'  id='word_" + i + "'>" + d + "</span>";
-                  }
-              }
-
-          }
-
-
-
-
-
-
-          //var inc = 0;
+          // generate the text spans w.r.t. given highlighting setting
+          var textToHTMLMapping = UserTestGenereator.textToHTMLMapping(usedEncoding, highlightIndices)
 
           var y = x.map(textToHTMLMapping);
 
-
-
-            showSample.set(false);
-            currentText.set(y.join(" "));
-          //console.log(data);
+          showSample.set(false);
+          currentText.set(y.join(" "));
       })
 
       function endExperiment(){
@@ -334,7 +181,7 @@ Template.control.events({
 
       }
 
-      Meteor.setTimeout(endExperiment,3000)
+      Meteor.setTimeout(endExperiment,7000)
     //Meteor.setTimeout(endExperiment,15000)
    //console.log("xxx");
     //Session.set("counter", Session.get("counter") + 1);
