@@ -4,7 +4,7 @@
         <div id="examnpleText" style="position:fixed;top:20px; left:30px;"> {{{currentTestString}}}</div>
 
 
-  {{> vis}}
+  {{> vis }}
 
   {{> control}}
 
@@ -20,7 +20,12 @@
 
 <template name="vis">
     <div id="vis" style="width: 900px;height: 700px;position: fixed;top:60px;left: 20px; background-color: #eeeeee; border: 5px solid #245269;overflow: hidden;">
-        <div style="padding:10px;">{{{counter}}}</div>
+        <div style="padding:10px;">{{{counter}}}
+            {{#if showSample}}
+                <p></p>
+                {{{currentTestString}}}
+            {{/if}}
+        </div>
     </div>
 </template>
 

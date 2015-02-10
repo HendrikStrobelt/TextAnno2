@@ -1,8 +1,8 @@
 <template name="checkConfigs">
 
     {{#each possibleConfigs}}
-        <p>This is a <span class="{{name}}">highlight</span> using {{name}}.</p>
-
+        <!--<p>This is a <span class="{{name}}">highlight</span> using {{name}}.</p>-->
+        {{>currentTest}}
 
     {{/each}}
 
@@ -10,3 +10,8 @@
 
 </template>
 
+<template name="currentTest">
+    <p>{{{helpText}}}</p>
+
+
+</template>

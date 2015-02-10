@@ -1,0 +1,61 @@
+<template name="summary">
+
+
+    <h3>Your Score:</h3>
+
+    <p>
+        You collected <b>{{points}}</b> of possible {{maxPoints}} points ! Congratulations !
+    </p>
+
+
+    <p>
+        As a last task, please select the highlights you liked most (esthetically):
+    </p>
+
+    <table class="table table-hover" style="width:350px">
+
+        <tbody>
+        {{#each technique}}
+
+
+            {{> tech}}
+        {{/each}}
+        </tbody>
+    </table>
+
+    <p>
+        {{#if isDone}}
+            <button class="btn btn-success" id="finishSummary">
+                finish
+            </button>
+
+        {{/if}}
+    </p>
+
+
+
+
+
+</template>
+
+
+<template name="tech">
+    <tr class="tSelection">
+        <td>
+            {{#if selected}}
+                <span class="glyphicon glyphicon-heart" style="color:red;"></span>
+            {{else}}
+                <span class="glyphicon glyphicon-record" style="color:lightgray"></span>
+            {{/if}}
+
+        </td>
+        <td style="{{#if selected}}background-color: lightgray;{{/if}}">
+
+            This is a <span class="{{name}}">highlight</span> I like.
+
+
+        </td>
+
+
+    </tr>
+</template>

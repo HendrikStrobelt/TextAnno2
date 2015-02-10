@@ -27,6 +27,9 @@ Template.oneLog.helpers({
     isComment:function(){
         return  this.type == "comment"
     },
+    isFavoriteTechniques:function(){
+        return  this.type == "favTechs"
+    },
     correctLength:function(){return this.correct.length *10;},
     incorrectLength:function(){return this.incorrect.length *10;}
 })

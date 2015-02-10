@@ -28,3 +28,5 @@ Router.route("/end")
 Router.route("/explain")
 Router.route("/demography")
 Router.route("/showLogs")
+
+Router.route("/summary")
