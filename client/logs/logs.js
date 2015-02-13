@@ -30,6 +30,22 @@ Template.oneLog.helpers({
     isFavoriteTechniques:function(){
         return  this.type == "favTechs"
     },
+    techniques:function(){
+      console.log(this, typeof this.technique);
+        var t = this.technique
+
+        if ((typeof t) === 'string'){
+            return t;
+        }else{
+            var maxI = (t.type==="merge")?2:1;
+            var allNames = t.techs.map(function(ddd,i){
+                if (i<maxI) return "<b>"+ddd.name+"</b>"
+                return ddd.name
+            }).join(" -- ")
+            return t.type+": "+allNames;
+        }
+        return "aa";
+    },
     correctLength:function(){return this.correct.length *10;},
     incorrectLength:function(){return this.incorrect.length *10;}
 })
