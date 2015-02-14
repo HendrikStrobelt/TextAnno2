@@ -16,7 +16,7 @@ var currentDistribution ={};
 
 Template.userTest.created = function(){
     var utg = new UserTestGenereator();
-    var userTest = utg.getRandomTestSequence();
+    var userTest = utg.getRandomTestSequence(3,true,false);
     Session.setDefault("userTest", userTest);
     Session.setDefault("userTestIndex", 0);
     Session.setDefault("TotalPoints", 0);
@@ -47,7 +47,7 @@ Template.userTest.helpers({
 
 
 
-        return "Example: "+text + disclaimer;
+        return "<b>Instruction: </b>"+text + disclaimer;
     },
     currentMethod:function(){
         return Session.get("userTest")[Session.get("userTestIndex")];
@@ -147,10 +147,11 @@ Template.control.events({
           Session.set("TotalPoints",Session.get("TotalPoints")+(uniqueValuesActive.length-uniqueValuesInactive.length))
 
 
-          currentText.set(" <h3> Your Result: " + uniqueValuesActive.length +
+          currentText.set(" <p class='results'> Your Result: " + uniqueValuesActive.length +
             " correct words and " +uniqueValuesInactive.length +
             " incorrect Words = "+(uniqueValuesActive.length-uniqueValuesInactive.length) +
-            " points</h3><p/> <h3> Sum Points: "+Session.get("TotalPoints")+"</h3><p/> <h3> Hit 'start' for the next round! (see the example of the next highlight above the box)</h3>")
+            " points <br/> Sum Points: "+Session.get("TotalPoints")+"</p>" +
+          "This is the test field. Please ensure that you can see the start button and you don't need to scroll down. After pressing 'Start' you have 15 seconds to get the highlights as <b>precise</b> as possible. Every non-highlight you click will account negative to the score. Before you start, please have a look above this box to see an example of the current highlight technique that will be used.<h3> Hit 'start' for the next round! </h3>")
 
 
 
@@ -181,8 +182,8 @@ Template.control.events({
 
       }
 
-      Meteor.setTimeout(endExperiment,7000)
-    //Meteor.setTimeout(endExperiment,15000)
+      //Meteor.setTimeout(endExperiment,7000)
+    Meteor.setTimeout(endExperiment,13000)
    //console.log("xxx");
     //Session.set("counter", Session.get("counter") + 1);
   }

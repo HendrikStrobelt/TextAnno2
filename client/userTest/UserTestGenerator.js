@@ -51,9 +51,9 @@ UserTestGenereator.helpText = function(){
         validExamples = "These two are <span class='"+this.techs[0].css+"'> valid </span> and"+
         "<span class='"+styleString+"'> valid </span>";
     }else if (this.type=="merge"){
-        validExamples = "Only this highlight is  <span class='"+styleString+"'> valid </span>"
+        validExamples = "Only this is a <span class='"+styleString+"'> valid highlight</span>"
     }else{
-        validExamples = "This highlight is <span class='"+styleString+"'> valid </span>."
+        validExamples = "This is a '<span class='"+styleString+"'> valid highlight </span>'."
     }
 
     var invalidExamples = "";
@@ -87,9 +87,10 @@ UserTestGenereator.textToHTMLMapping = function(usedEncoding, highlightIndices){
 
         res = function(d,i){
             if (_.contains(highlightIndices.positiveSamples, i)){
-                return "<span class='active "+positiveEncoding+"'  id='word_"+i+"'>" + d+"</span>"
+                if (positiveEncoding.indexOf("colorBack")>-1) return "<span class='active "+positiveEncoding+"'  id='word_"+i+"'>" + d+"</span>"
+                else return "<span class='active "+positiveEncoding+"'  style ='background:#eee;' id='word_"+i+"'>" + d+"</span>"
             }else {
-                return "<span class='inactive'  id='word_"+i+"'>" + d+ "</span>";
+                return "<span class='inactive' style ='background:#eee;' id='word_"+i+"'>" + d+ "</span>";
             }
 
 
@@ -196,39 +197,46 @@ UserTestGenereator.yesNoList = function(usedEncoding){
 
 
 
-UserTestGenereator.prototype.getRandomTestSequence=function(){
+UserTestGenereator.prototype.getRandomTestSequence=function(numberOfRounds, includeSingles, includeMixed){
 
     var i= 0, j= 0, techLength = this.testTechniques.length;
-    var allCombination = [];
-    for (i = 0;i<techLength;i++){
-        allCombination.push(
-            {techs:[this.testTechniques[i]], type:"single"}
-        );
+    var res = [];
+    var round = 0;
 
-        for (j=i+1;j<techLength;j++){
-            allCombination.push(
-                {techs:[this.testTechniques[i],this.testTechniques[j]], type:"dominant"}
-            );
-            allCombination.push(
-                {techs:[this.testTechniques[j],this.testTechniques[i]], type:"dominant"}
-            );
-            allCombination.push(
-                {techs:[this.testTechniques[j],this.testTechniques[i]], type:"merge"}
-            );
+    for (round = 0; round<numberOfRounds;round++) {
+        var allCombination = []
+        for (i = 0; i < techLength; i++) {
+            if (includeSingles) {
+                allCombination.push(
+                    {techs: [this.testTechniques[i]], type: "single"}
+                );
+            }
 
+
+            if (includeMixed) {
+                for (j = i + 1; j < techLength; j++) {
+                    allCombination.push(
+                        {techs: [this.testTechniques[i], this.testTechniques[j]], type: "dominant"}
+                    );
+                    allCombination.push(
+                        {techs: [this.testTechniques[j], this.testTechniques[i]], type: "dominant"}
+                    );
+                    allCombination.push(
+                        {techs: [this.testTechniques[j], this.testTechniques[i]], type: "merge"}
+                    );
+
+                }
+            }
         }
 
+        res = res.concat(_.shuffle(allCombination));
 
     }
 
-    console.log(allCombination);
-
-
-
-
+    console.log(res);
 
     //return allCombination
-    return _.shuffle(allCombination);
+    return res;
 
 }
 
