@@ -9,7 +9,7 @@ Template.checkConfigs.helpers({
     //console.log(udh.getRandomTestSequence());
         //return udh.getRandomTestSequence().map(function(d){return {name:d};});
 
-        return udh.getRandomTestSequence(1,true,true);
+        return udh.getRandomTestSequence(1,true, udh.includeAllMixesFilter());
 
 
     }

@@ -16,7 +16,25 @@ var currentDistribution ={};
 
 Template.userTest.created = function(){
     var utg = new UserTestGenereator();
-    var userTest = utg.getRandomTestSequence(3,true,false);
+    var userTest = utg.getRandomTestSequence(2,false,function(techs){
+
+        var res = [false,false,false];
+        techs.forEach(function (d) {
+            //console.log(d);
+            if (d.name.indexOf("increase")>-1 || d.name.indexOf("italic")>-1){
+                //console.log(d);
+                  res = [true,true,false]; // no merged
+            }
+        })
+
+
+        return res;
+    });
+
+    console.log(userTest.map(function(t){
+        return t.type + "- "+ t.techs.map(function(tt){return tt.css}).join(",")
+
+    }).join("\n"));
     Session.setDefault("userTest", userTest);
     Session.setDefault("userTestIndex", 0);
     Session.setDefault("TotalPoints", 0);

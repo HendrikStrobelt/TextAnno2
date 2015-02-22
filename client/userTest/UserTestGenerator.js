@@ -196,8 +196,14 @@ UserTestGenereator.yesNoList = function(usedEncoding){
 //<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 
 
-
-UserTestGenereator.prototype.getRandomTestSequence=function(numberOfRounds, includeSingles, includeMixed){
+/**
+ *
+ * @param numberOfRounds - guess what -- number of rounds :)
+ * @param includeSingles - a boolean value if single tests should be included
+ * @param mixedFilterFunction - a function that gets two techniques and returns an array of booleans
+ * @returns {Array}
+ */
+UserTestGenereator.prototype.getRandomTestSequence=function(numberOfRounds, includeSingles, includeMixedFilterFunction){
 
     var i= 0, j= 0, techLength = this.testTechniques.length;
     var res = [];
@@ -213,17 +219,23 @@ UserTestGenereator.prototype.getRandomTestSequence=function(numberOfRounds, incl
             }
 
 
-            if (includeMixed) {
+            if (includeMixedFilterFunction) {
                 for (j = i + 1; j < techLength; j++) {
-                    allCombination.push(
-                        {techs: [this.testTechniques[i], this.testTechniques[j]], type: "dominant"}
-                    );
-                    allCombination.push(
-                        {techs: [this.testTechniques[j], this.testTechniques[i]], type: "dominant"}
-                    );
-                    allCombination.push(
-                        {techs: [this.testTechniques[j], this.testTechniques[i]], type: "merge"}
-                    );
+                    var includeCases = includeMixedFilterFunction([this.testTechniques[i], this.testTechniques[j]]);
+                        // returns an array [bool, bool, bool] for the three cases below
+
+                        if (includeCases[0])
+                            allCombination.push(
+                                {techs: [this.testTechniques[i], this.testTechniques[j]], type: "dominant"}
+                            );
+                        if (includeCases[1])
+                            allCombination.push(
+                                {techs: [this.testTechniques[j], this.testTechniques[i]], type: "dominant"}
+                            );
+                        if (includeCases[2])
+                            allCombination.push(
+                            {techs: [this.testTechniques[j], this.testTechniques[i]], type: "merge"}
+                        );
 
                 }
             }
@@ -238,6 +250,14 @@ UserTestGenereator.prototype.getRandomTestSequence=function(numberOfRounds, incl
     //return allCombination
     return res;
 
+}
+
+/**
+ * Helper function that defines the filter to include all mixed tests
+ * @returns {boolean[]}
+ */
+UserTestGenereator.prototype.includeAllMixesFilter = function(){
+    return [true,true,true]
 }
 
 
