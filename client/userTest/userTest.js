@@ -16,7 +16,7 @@ var currentDistribution ={};
 
 Template.userTest.created = function(){
     var utg = new UserTestGenereator();
-    var userTest = utg.getRandomTestSequence(2,false,function(techs){
+    var userTest = utg.getRandomTestSequence(1,false,function(techs){
 
         var res = [false,false,false];
         techs.forEach(function (d) {
