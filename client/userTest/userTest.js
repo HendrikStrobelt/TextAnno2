@@ -18,18 +18,18 @@ Template.userTest.created = function(){
     var utg = new UserTestGenereator();
     var userTest = utg.getRandomTestSequence(1,false,function(techs){
 
-        var res = [false,false,false];
-        techs.forEach(function (d) {
-            //console.log(d);
-            if (d.name.indexOf("increase")>-1 || d.name.indexOf("italic")>-1){
-                //console.log(d);
-                  res = [true,true,false]; // no merged
-            }
-        })
+        var res = [false,false,false, true, true];
+        //techs.forEach(function (d) {
+        //    //console.log(d);
+        //    if (d.name.indexOf("increase")>-1 || d.name.indexOf("italic")>-1){
+        //        //console.log(d);
+        //          res = [true,true,false]; // no merged
+        //    }
+        //})
 
 
         return res;
-    });
+    }, 10);
 
     console.log(userTest.map(function(t){
         return t.type + "- "+ t.techs.map(function(tt){return tt.css}).join(",")
@@ -159,7 +159,7 @@ Template.control.events({
           var sesID = Meteor.default_connection._lastSessionId
           var uniqueValuesActive = _.uniq(activeList)
           var uniqueValuesInactive = _.uniq(inactiveList)
-
+          var trialNo = Session.get("userTestIndex");
           var usedEncoding = Session.get("userTest")[Session.get("userTestIndex")]
 
           Session.set("TotalPoints",Session.get("TotalPoints")+(uniqueValuesActive.length-uniqueValuesInactive.length))
@@ -176,7 +176,7 @@ Template.control.events({
 
           var userID = Session.get("userID");
           if (userID){
-              UserLogs.insert({sessionID: userID, type:"userTest", correct: activeList, incorrect: inactiveList, date:new Date(), technique:usedEncoding, distribution: currentDistribution});
+              UserLogs.insert({sessionID: userID, type:"userTest", correct: activeList, incorrect: inactiveList, date:new Date(), technique:usedEncoding, distribution: currentDistribution, trial: trialNo});
           }
 
           //UserLogs.insert({test:"01"})

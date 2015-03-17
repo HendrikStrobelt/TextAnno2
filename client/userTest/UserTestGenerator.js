@@ -39,6 +39,10 @@ UserTestGenereator.helpText = function(){
         explain = "Please find occurrences with the highlight ("+
         this.techs[0].name
         +")."
+    }else if (this.type == "dominantOnly"){
+        explain = "Please find occurrences with the highlight ("+
+        this.techs[0].name
+        +") ONLY."
     }else{
         explain = "Please find occurrences with the highlight ("+
         this.techs[0].name+")."
@@ -50,6 +54,8 @@ UserTestGenereator.helpText = function(){
     if (this.type == "dominant"){
         validExamples = "These two are <span class='"+this.techs[0].css+"'> valid </span> and"+
         "<span class='"+styleString+"'> valid </span>";
+    }else if (this.type=="dominantOnly"){
+        validExamples = "Only this is a <span class='"+this.techs[0].css+"'> valid highlight</span>"
     }else if (this.type=="merge"){
         validExamples = "Only this is a <span class='"+styleString+"'> valid highlight</span>"
     }else{
@@ -59,6 +65,9 @@ UserTestGenereator.helpText = function(){
     var invalidExamples = "";
     if (this.type == "dominant"){
         invalidExamples = "(This highlight is <span class='"+this.techs[1].css+"'> wrong</span>)";
+    }else if (this.type=="dominantOnly"){
+        invalidExamples = "(These highlights are <span class='"+this.techs[1].css+"'> wrong</span> and"+
+        "<span class='"+styleString+"'> wrong</span>)";
     }else if (this.type=="merge"){
         invalidExamples = "(These highlights are <span class='"+this.techs[1].css+"'> wrong</span> and"+
         "<span class='"+this.techs[0].css+"'> wrong</span>)";
@@ -109,6 +118,25 @@ UserTestGenereator.textToHTMLMapping = function(usedEncoding, highlightIndices){
             }else {
                 var css = '';
                 if (_.contains(highlightIndices.negativeSamples2, i)) css = negative1Encoding;
+                return "<span class='inactive " + css + "'  id='word_" + i + "'>" + d + "</span>";
+            }
+        }
+
+    }else if (usedEncoding.type==='dominantOnly'){
+        var positiveEncoding = usedEncoding.techs[0].css;
+        var negative1Encoding = usedEncoding.techs[0].css + ' '+usedEncoding.techs[1].css;
+        var negative2Encoding= usedEncoding.techs[1].css;
+
+        res = function(d,i) {
+            if (_.contains(highlightIndices.positiveSamples, i)) {
+                return "<span class='active " + positiveEncoding + "'  id='word_" + i + "'>" + d + "</span>"
+            } else {
+                var css = '';
+
+                if (_.contains(highlightIndices.negativeSamples1, i)) css = negative1Encoding;
+                else if (_.contains(highlightIndices.negativeSamples2, i)) css = negative2Encoding;
+
+
                 return "<span class='inactive " + css + "'  id='word_" + i + "'>" + d + "</span>";
             }
         }
@@ -167,6 +195,23 @@ UserTestGenereator.yesNoList = function(usedEncoding){
         res.push('<div style="padding: 2px; margin-top:10px; background-color:white;"><span class="glyphicon glyphicon-remove" style="color:red;padding:1px;"></span> This is a <span class="'+negative1Encoding+'">wrong highlight</span>&nbsp;&nbsp;(ONLY '+usedEncoding.techs[1].name+' NOT '+usedEncoding.techs[0].name+')</div>')
 
     }
+    else if (usedEncoding.type==='dominantOnly'){
+        var positiveEncoding = usedEncoding.techs[0].css;
+        var negative1Encoding = usedEncoding.techs[0].css + ' '+usedEncoding.techs[1].css;
+        var negative2Encoding= usedEncoding.techs[1].css;
+
+        // the right example no 1
+        res.push('<div style="padding: 2px; margin-top:1px;background-color:white;"><span class="glyphicon glyphicon-ok" style="color:green;padding:1px;"></span> This is a <span class="'+positiveEncoding+'">correct highlight</span>&nbsp;&nbsp;('+usedEncoding.techs[0].name+' ONLY)</div>')
+
+
+        // the wrong example 1
+        res.push('<div style="padding: 2px; margin-top:10px; background-color:white;"><span class="glyphicon glyphicon-remove" style="color:red;padding:1px;"></span> This is a <span class="'+negative1Encoding+'">wrong highlight</span>&nbsp;&nbsp;( '+usedEncoding.techs[0].name+' AND '+usedEncoding.techs[1].name+')</div>')
+
+
+        // the wrong example 2
+        res.push('<div style="padding: 2px; margin-top:1px; background-color:white;"><span class="glyphicon glyphicon-remove" style="color:red;padding:1px;"></span> This is a <span class="'+negative2Encoding+'">wrong highlight</span>&nbsp;&nbsp;(ONLY '+usedEncoding.techs[1].name+' NOT '+usedEncoding.techs[0].name+')</div>')
+
+    }
     else if (usedEncoding.type==='merge'){
         var positiveEncoding = usedEncoding.techs[0].css + ' '+usedEncoding.techs[1].css;
         var negative1Encoding = usedEncoding.techs[0].css;
@@ -203,7 +248,7 @@ UserTestGenereator.yesNoList = function(usedEncoding){
  * @param mixedFilterFunction - a function that gets two techniques and returns an array of booleans
  * @returns {Array}
  */
-UserTestGenereator.prototype.getRandomTestSequence=function(numberOfRounds, includeSingles, includeMixedFilterFunction){
+UserTestGenereator.prototype.getRandomTestSequence=function(numberOfRounds, includeSingles, includeMixedFilterFunction, numberOfRandomLearning){
 
     var i= 0, j= 0, techLength = this.testTechniques.length;
     var res = [];
@@ -222,7 +267,7 @@ UserTestGenereator.prototype.getRandomTestSequence=function(numberOfRounds, incl
             if (includeMixedFilterFunction) {
                 for (j = i + 1; j < techLength; j++) {
                     var includeCases = includeMixedFilterFunction([this.testTechniques[i], this.testTechniques[j]]);
-                        // returns an array [bool, bool, bool] for the three cases below
+                        // returns an array [bool, bool, bool, bool,bool] for the three cases below
 
                         if (includeCases[0])
                             allCombination.push(
@@ -236,11 +281,22 @@ UserTestGenereator.prototype.getRandomTestSequence=function(numberOfRounds, incl
                             allCombination.push(
                             {techs: [this.testTechniques[j], this.testTechniques[i]], type: "merge"}
                         );
+                    if (includeCases[3])
+                        allCombination.push(
+                            {techs: [this.testTechniques[i], this.testTechniques[j]], type: "dominantOnly"}
+                        );
+                    if (includeCases[4])
+                        allCombination.push(
+                            {techs: [this.testTechniques[j], this.testTechniques[i]], type: "dominantOnly"}
+                        );
 
                 }
             }
         }
 
+        if (numberOfRandomLearning){
+            res = res.concat(_.shuffle(allCombination).slice(0,numberOfRandomLearning))
+        }
         res = res.concat(_.shuffle(allCombination));
 
     }
