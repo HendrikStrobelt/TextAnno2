@@ -7,7 +7,7 @@ var maxTests = 1;
 var activeList = [];
 var inactiveList = [];
 
-var currentText = new ReactiveVar("This is the test field. Please ensure that you can see the start button and you don't need to scroll down. After pressing 'Start' you have 15 seconds to get the highlights as <b>precise</b> as possible. Every non-highlight you click will account negative to the score. Before you start, please have a look above this box to see an example of the current highlight technique that will be used.")
+var currentText = new ReactiveVar("This is the test field. Please ensure that you can see the start button and you don't need to scroll down. After pressing 'Start' you have 13 seconds to get the highlights as <b>precise</b> as possible. Every non-highlight you click will account negative to the score. Before you start, please have a look above this box to see an example of the current highlight technique that will be used.")
 
 var showSample = new ReactiveVar(true);
 
@@ -16,9 +16,10 @@ var currentDistribution ={};
 
 Template.userTest.created = function(){
     var utg = new UserTestGenereator();
-    var userTest = utg.getRandomTestSequence(1,false,function(techs){
+    var userTest = utg.getRandomTestSequence(1,true,function(techs){
 
-        var res = [false,false,false, true, true];
+        var res = [false,false,false, false,false];
+        //var res = [false,false,true, false, false];
         //techs.forEach(function (d) {
         //    //console.log(d);
         //    if (d.name.indexOf("increase")>-1 || d.name.indexOf("italic")>-1){
